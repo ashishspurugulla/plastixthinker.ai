@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chat with Microplastic | microplastics.ai</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(120deg, #b3e0ff 0%, #7fd8f7 60%, #f7cfff 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1rem;
+      overflow-x: hidden;
+    }
+    .main-container {
+      display: flex;
+      gap: 2rem;
+      max-width: 1200px;
+      width: 100%;
+      align-items: flex-start;
+    }
+    .chat-container {
+      background: #fff;
+      border-radius: 20px;
+      border: 2px solid #7fd8f7;
+      box-shadow: 0 8px 24px rgba(0,60,120,0.12);
+      max-width: 800px;
+      width: 100%;
+      height: 80vh;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .side-container {
+      width: 300px;
+      position: sticky;
+      top: 1rem;
+    }
+    .fact-card {
+      background: rgba(255,255,255,0.95);
+      border-radius: 18px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 24px rgba(0,60,120,0.12);
+      border: 2px solid #7fd8f7;
+      backdrop-filter: blur(10px);
+      animation: fadeInUp 0.6s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+    .fact-card::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #4fc3f7, #29b6f6);
+      border-radius: 50%;
+      opacity: 0.1;
+      z-index: 0;
+    }
+    .fact-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      color: #1a4d6e;
+      font-weight: bold;
+      font-size: 1.1rem;
+      position: relative;
+      z-index: 1;
+    }
+    .fact-icon {
+      font-size: 1.3rem;
+    }
+    .fact-content {
+      color: #2a5d7e;
+      line-height: 1.6;
+      font-size: 0.95rem;
+      position: relative;
+      z-index: 1;
+    }
+    @keyframes fadeInUp {
+      from { 
+        opacity: 0; 
+        transform: translateY(20px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+    canvas.background {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .chat-header {
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid #e0e0e0;
+      background: linear-gradient(90deg, #7fd8f7, #f7cfff);
+      border-radius: 18px 18px 0 0;
+    }
+    .bot-avatar {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .bot-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #4fc3f7, #29b6f6);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: white;
+      box-shadow: 0 4px 12px rgba(79, 195, 247, 0.3);
+      border: 3px solid #fff;
+    }
+    .bot-info {
+      flex: 1;
+    }
+    .bot-name {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #ffffff;
+      margin-bottom: 0.2rem;
+      font-family: 'Georgia', serif;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    .bot-tagline {
+      font-size: 0.9rem;
+      color: #ffffff;
+      font-style: italic;
+      font-family: 'Arial', sans-serif;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    h1 {
+      text-align: center;
+      font-size: 1.6rem;
+      color: #ffffff;
+      background: none;
+      -webkit-background-clip: initial;
+      background-clip: initial;
+      -webkit-text-fill-color: initial;
+      margin: 0;
+      font-family: 'Georgia', serif;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .message {
+      max-width: 80%;
+      padding: 0.8rem 1rem;
+      border-radius: 18px;
+      word-wrap: break-word;
+      animation: fadeIn 0.3s ease-in;
+    }
+    .message.user {
+      align-self: flex-end;
+      background: linear-gradient(135deg, #7fd8f7, #b3e0ff);
+      color: #1a4d6e;
+      border-bottom-right-radius: 4px;
+    }
+    .message.ai {
+      align-self: flex-start;
+      background: linear-gradient(135deg, #f0faff, #e6f7ff);
+      color: #1a4d6e;
+      border: 1px solid #b3e0ff;
+      border-bottom-left-radius: 4px;
+    }
+    .message-time {
+      font-size: 0.7rem;
+      opacity: 0.7;
+      margin-top: 0.3rem;
+    }
+    .chat-input {
+      padding: 1.5rem 2rem;
+      border-top: 1px solid #e0e0e0;
+      background: #fafafa;
+      border-radius: 0 0 18px 18px;
+    }
+    .category-row {
+      margin-bottom: 1rem;
+    }
+    .tone-row {
+      margin-bottom: 1rem;
+    }
+    .tone-select {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border-radius: 12px;
+      border: 1.5px solid #b3e0ff;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      color: #1a4d6e;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tone-select:focus {
+      outline: none;
+      border-color: #7fd8f7;
+      box-shadow: 0 0 0 2px rgba(127, 216, 247, 0.2);
+    }
+    .tone-select option {
+      padding: 0.5rem;
+    }
+    .category-select {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border-radius: 12px;
+      border: 1.5px solid #b3e0ff;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      color: #1a4d6e;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .category-select:focus {
+      outline: none;
+      border-color: #7fd8f7;
+      box-shadow: 0 0 0 2px rgba(127, 216, 247, 0.2);
+    }
+    .category-select option {
+      padding: 0.5rem;
+    }
+    .input-row {
+      display: flex;
+      gap: 0.8rem;
+      align-items: flex-end;
+    }
+    textarea {
+      flex: 1;
+      resize: none;
+      padding: 0.8rem 1rem;
+      border-radius: 14px;
+      border: 1.5px solid #b3e0ff;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      min-height: 44px;
+      max-height: 120px;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: #7fd8f7;
+      box-shadow: 0 0 0 2px rgba(127, 216, 247, 0.2);
+    }
+    button {
+      background: linear-gradient(90deg, #7fd8f7, #c7f7e6);
+      border: none;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #1a4d6e;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    button:hover {
+      background: linear-gradient(90deg, #f7cfff, #7fd8f7);
+      transform: translateY(-1px);
+    }
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .spinner {
+      border: 2px solid #b3e0ff;
+      border-top: 2px solid #1a4d6e;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .welcome-message {
+      text-align: center;
+      color: #666;
+      font-style: italic;
+      margin: 2rem 0;
+    }
+    .clear-chat {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(255,255,255,0.8);
+      border: 1px solid #ddd;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .clear-chat:hover {
+      background: rgba(255,255,255,1);
+      border-color: #7fd8f7;
+    }
+    .dataset-section {
+      background: rgba(255,255,255,0.95);
+      border-radius: 18px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 24px rgba(0,60,120,0.12);
+      border: 2px solid #7fd8f7;
+      backdrop-filter: blur(10px);
+      margin-bottom: 1rem;
+    }
+    .dataset-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      color: #1a4d6e;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    .upload-area {
+      border: 2px dashed #7fd8f7;
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      background: rgba(127, 216, 247, 0.05);
+      transition: all 0.3s;
+      cursor: pointer;
+      margin-bottom: 1rem;
+    }
+    .upload-area:hover {
+      border-color: #1a4d6e;
+      background: rgba(127, 216, 247, 0.1);
+    }
+    .upload-area.dragover {
+      border-color: #1a4d6e;
+      background: rgba(127, 216, 247, 0.15);
+      transform: scale(1.02);
+    }
+    .upload-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #7fd8f7;
+    }
+    .file-input {
+      display: none;
+    }
+    .upload-text {
+      color: #1a4d6e;
+      font-weight: 500;
+    }
+    .upload-hint {
+      color: #666;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+    .dataset-list {
+      margin-top: 1rem;
+    }
+    .dataset-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      border: 1px solid #e9ecef;
+    }
+    .dataset-info {
+      flex: 1;
+    }
+    .dataset-name {
+      font-weight: 600;
+      color: #1a4d6e;
+      margin-bottom: 0.2rem;
+    }
+    .dataset-meta {
+      font-size: 0.8rem;
+      color: #666;
+    }
+    .dataset-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .btn-small {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-remove {
+      background: #ff6b6b;
+      color: white;
+    }
+    .btn-remove:hover {
+      background: #ff5252;
+    }
+    .processing-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #1a4d6e;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+    .processing-spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid #b3e0ff;
+      border-top: 2px solid #1a4d6e;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    .bubble {
+      position: fixed;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      animation: float 6s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0.7;
+      }
+      50% {
+        transform: translateY(-20px) rotate(180deg);
+        opacity: 1;
+      }
+    }
+    @media (max-width: 768px) {
+      .main-container {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .chat-container {
+        height: 70vh;
+        margin: 0;
+      }
+      .side-container {
+        width: 100%;
+        position: static;
+      }
+      .fact-card {
+        margin-bottom: 1rem;
+      }
+      .message {
+        max-width: 90%;
+      }
+      .input-row {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas class="background"></canvas>
+  <div class="main-container">
+    <div class="chat-container">
+      <div class="chat-header">
+        <div class="bot-avatar">
+          <div class="bot-icon">🐳</div>
+          <div class="bot-info">
+            <h1>Microplastic</h1>
+            <p class="bot-tagline">Your friendly anti-plastic whale!</p>
+          </div>
+        </div>
+        <div class="clear-chat" onclick="clearChat()">Clear Chat</div>
+      </div>
+      
+      <div class="chat-messages" id="chat-messages">
+        <div class="welcome-message">
+          Hi! I'm Microplastic, your friendly anti-plastic whale! Ask me anything about microplastics!
+        </div>
+      </div>
+      
+      <div class="chat-input">
+        <div class="tone-row">
+          <select class="tone-select" id="tone-select">
+            <option value="">Select tone (optional)</option>
+            <option value="simple">Simple explanation</option>
+            <option value="scientific">Scientific answer</option>
+            <option value="teen">Teen-friendly</option>
+          </select>
+        </div>
+        <div class="category-row">
+          <select class="category-select" id="category-select">
+            <option value="">Select a category (optional)</option>
+            <option value="What are microplastics?">What are microplastics?</option>
+            <option value="How do microplastics affect marine life?">How do microplastics affect marine life?</option>
+            <option value="What are the main sources of microplastics?">What are the main sources of microplastics?</option>
+            <option value="How can we reduce microplastic pollution?">How can we reduce microplastic pollution?</option>
+          </select>
+        </div>
+        <div class="input-row">
+          <textarea 
+            id="question" 
+            placeholder="Type your question about microplastics..." 
+            rows="1"
+            onkeydown="handleKeyPress(event)"
+          ></textarea>
+          <button id="send-btn" onclick="sendMessage()">Send</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="side-container">
+      <div class="fact-card">
+        <div class="fact-title">
+          <span class="fact-icon">🌊</span>
+          Microplastic's Ocean Facts
+        </div>
+        <div class="fact-content" id="fact-content">
+          Loading interesting fact...
+        </div>
+      </div>
+      
+      <div class="dataset-section">
+        <div class="dataset-title">
+          <span>📚</span>
+          Knowledge Base
+        </div>
+        
+        <div class="upload-area" id="upload-area">
+          <div class="upload-icon">📄</div>
+          <div class="upload-text">Drop PDF or text files here</div>
+          <div class="upload-hint">or click to browse</div>
+          <input type="file" id="file-input" class="file-input" accept=".pdf,.txt,.doc,.docx" multiple>
+        </div>
+        
+        <div class="dataset-list" id="dataset-list">
+          <!-- Dataset items will be populated here -->
+        </div>
+        
+        <div class="processing-indicator" id="processing-indicator" style="display: none;">
+          <div class="processing-spinner"></div>
+          <span>Processing document...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.querySelector('canvas.background');
+    const ctx = canvas.getContext('2d');
+    let dots = [];
+    let chatHistory = [];
+    let isLoggedIn = false;
+    let currentUser = null;
+
+    // Microplastics facts
+    const microplasticsFacts = [
+      "Microplastics are plastic particles smaller than 5mm in diameter, often invisible to the naked eye.",
+      "A single load of laundry can release up to 700,000 microplastic fibers into the water system.",
+      "Microplastics have been found in the deepest parts of the ocean, including the Mariana Trench.",
+      "Scientists estimate that by 2050, there will be more plastic in the ocean than fish by weight.",
+      "Microplastics can absorb toxic chemicals and transfer them to marine organisms that ingest them.",
+      "Personal care products like face scrubs and toothpaste often contain microbeads made of plastic.",
+      "Synthetic clothing like polyester and nylon sheds microfibers every time it's washed.",
+      "Microplastics have been found in drinking water, beer, and even table salt worldwide.",
+      "The Great Pacific Garbage Patch contains an estimated 1.8 trillion pieces of plastic.",
+      "Microplastics can take hundreds of years to break down completely in the environment.",
+      "Plastic bottles can take up to 450 years to decompose in the ocean.",
+      "Over 8 million tons of plastic enter the ocean every year, equivalent to dumping a garbage truck every minute.",
+      "Microplastics have been found in the stomachs of 90% of seabirds and 100% of sea turtle species.",
+      "The average person ingests about 5 grams of plastic per week, roughly the weight of a credit card.",
+      "Microplastics can travel through the food chain, from plankton to fish to humans.",
+      "Plastic production has increased from 2 million tons in 1950 to over 400 million tons today.",
+      "Less than 10% of all plastic ever produced has been recycled.",
+      "Microplastics have been detected in human blood, lungs, and even placentas.",
+      "The ocean contains an estimated 5.25 trillion pieces of plastic debris.",
+      "Microplastics can act as carriers for harmful bacteria and viruses in water systems."
+    ];
+
+    // Background animation
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    function randomColor() {
+      const colors = ['#ffffff','#b3e0ff','#f7cfff','#c7f7e6','#f7f7cf','#d1cfff'];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+    function createDots() {
+      dots = [];
+      for (let i = 0; i < 80; i++) {
+        dots.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: 2 + Math.random() * 3,
+          color: randomColor(),
+          dx: (Math.random() - 0.5) * 0.5,
+          dy: -0.2 - Math.random() * 0.5
+        });
+      }
+    }
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let dot of dots) {
+        ctx.beginPath();
+        ctx.arc(dot.x, dot.y, dot.r, 0, Math.PI * 2);
+        ctx.fillStyle = dot.color;
+        ctx.globalAlpha = 0.6;
+        ctx.fill();
+        dot.x += dot.dx;
+        dot.y += dot.dy;
+        if (dot.y < -10) dot.y = canvas.height + 10;
+        if (dot.x < -10) dot.x = canvas.width + 10;
+        if (dot.x > canvas.width + 10) dot.x = -10;
+      }
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(animate);
+    }
+
+    // Floating bubbles animation
+    function createBubbles() {
+      const colors = ['#ffffff', '#b3e0ff', '#f7cfff', '#c7f7e6', '#f7f7cf', '#d1cfff'];
+      
+      for (let i = 0; i < 20; i++) {
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        
+        const size = Math.random() * 25 + 15;
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * window.innerHeight;
+        const delay = Math.random() * 6;
+        const duration = Math.random() * 3 + 4;
+        
+        bubble.style.width = size + 'px';
+        bubble.style.height = size + 'px';
+        bubble.style.left = x + 'px';
+        bubble.style.top = y + 'px';
+        bubble.style.animationDelay = delay + 's';
+        bubble.style.animationDuration = duration + 's';
+        bubble.style.background = colors[Math.floor(Math.random() * colors.length)];
+        
+        document.body.appendChild(bubble);
+      }
+    }
+
+    // Chat functionality
+    function addMessage(content, isUser = false, timestamp = new Date()) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${isUser ? 'user' : 'ai'}`;
+      
+      const timeStr = timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      
+      messageDiv.innerHTML = `
+        <div>${content}</div>
+        <div class="message-time">${timeStr}</div>
+      `;
+      
+      document.getElementById('chat-messages').appendChild(messageDiv);
+      scrollToBottom();
+      
+      // Save to chat history
+      chatHistory.push({
+        content,
+        isUser,
+        timestamp: timestamp.toISOString()
+      });
+      
+      // Save to localStorage if logged in
+      if (isLoggedIn && currentUser) {
+        saveChatHistory();
+      }
+    }
+
+    function scrollToBottom() {
+      const chatMessages = document.getElementById('chat-messages');
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function handleKeyPress(event) {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+      }
+    }
+
+    async function sendMessage() {
+      const questionInput = document.getElementById('question');
+      const sendBtn = document.getElementById('send-btn');
+      const question = questionInput.value.trim();
+      const tone = document.getElementById('tone-select').value;
+      
+      if (!question) return;
+      
+      // Add user message
+      addMessage(question, true);
+      
+      // Clear input and disable button
+      questionInput.value = '';
+      sendBtn.disabled = true;
+      sendBtn.innerHTML = '<div class="spinner"></div>';
+      
+      try {
+        const res = await fetch('/ask', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            question,
+            tone,
+            useContext: datasets.length > 0 // Include context if datasets are available
+          })
+        });
+        
+        const data = await res.json();
+        const answer = data.answer || 'Sorry, I couldn\'t process your request. Please try again.';
+        
+        // Add AI response
+        addMessage(answer, false);
+        
+      } catch (err) {
+        addMessage('Sorry, something went wrong. Please check your connection and try again.', false);
+      } finally {
+        // Re-enable button
+        sendBtn.disabled = false;
+        sendBtn.textContent = 'Send';
+      }
+    }
+
+    function clearChat() {
+      if (confirm('Are you sure you want to clear the chat history?')) {
+        document.getElementById('chat-messages').innerHTML = `
+          <div class="welcome-message">
+            Hi! I'm Microplastic, your friendly anti-plastic whale! Ask me anything about microplastics!
+          </div>
+        `;
+        chatHistory = [];
+        if (isLoggedIn && currentUser) {
+          localStorage.removeItem(`chatHistory_${currentUser}`);
+        }
+      }
+    }
+
+    function saveChatHistory() {
+      if (isLoggedIn && currentUser) {
+        localStorage.setItem(`chatHistory_${currentUser}`, JSON.stringify(chatHistory));
+      }
+    }
+
+    function loadChatHistory() {
+      if (isLoggedIn && currentUser) {
+        const saved = localStorage.getItem(`chatHistory_${currentUser}`);
+        if (saved) {
+          chatHistory = JSON.parse(saved);
+          // Re-render chat history
+          const chatMessages = document.getElementById('chat-messages');
+          chatMessages.innerHTML = '';
+          
+          if (chatHistory.length === 0) {
+            chatMessages.innerHTML = `
+              <div class="welcome-message">
+                Hi! I'm Microplastic, your friendly anti-plastic whale! Ask me anything about microplastics!
+              </div>
+            `;
+          } else {
+            chatHistory.forEach(msg => {
+              const messageDiv = document.createElement('div');
+              messageDiv.className = `message ${msg.isUser ? 'user' : 'ai'}`;
+              
+              const timestamp = new Date(msg.timestamp);
+              const timeStr = timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+              
+              messageDiv.innerHTML = `
+                <div>${msg.content}</div>
+                <div class="message-time">${timeStr}</div>
+              `;
+              
+              chatMessages.appendChild(messageDiv);
+            });
+            scrollToBottom();
+          }
+        }
+      }
+    }
+
+    // Check login status on page load
+    async function checkLoginStatus() {
+      try {
+        const res = await fetch('/api/check-auth');
+        const data = await res.json();
+        if (data.loggedIn) {
+          isLoggedIn = true;
+          currentUser = data.username;
+          loadChatHistory();
+          loadDatasets(); // Load datasets when logged in
+        }
+      } catch (err) {
+        console.log('Not logged in or auth check failed');
+      }
+    }
+
+    // Display random fact
+    function displayRandomFact() {
+      const factContent = document.getElementById('fact-content');
+      const randomFact = microplasticsFacts[Math.floor(Math.random() * microplasticsFacts.length)];
+      factContent.textContent = randomFact;
+    }
+
+    // Dataset management
+    let datasets = [];
+
+    // File upload functionality
+    function initializeFileUpload() {
+      const uploadArea = document.getElementById('upload-area');
+      const fileInput = document.getElementById('file-input');
+
+      // Click to upload
+      uploadArea.addEventListener('click', () => {
+        fileInput.click();
+      });
+
+      // Drag and drop
+      uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+      });
+
+      uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('dragover');
+      });
+
+      uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        const files = e.dataTransfer.files;
+        handleFiles(files);
+      });
+
+      // File input change
+      fileInput.addEventListener('change', (e) => {
+        handleFiles(e.target.files);
+      });
+    }
+
+    async function handleFiles(files) {
+      for (let file of files) {
+        if (file.type === 'application/pdf' || 
+            file.type === 'text/plain' || 
+            file.type === 'application/msword' ||
+            file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+          await uploadFile(file);
+        } else {
+          alert('Please upload PDF, TXT, DOC, or DOCX files only.');
+        }
+      }
+    }
+
+    async function uploadFile(file) {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      // Show processing indicator
+      const processingIndicator = document.getElementById('processing-indicator');
+      processingIndicator.style.display = 'flex';
+
+      try {
+        const response = await fetch('/api/upload-dataset', {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          // Add to datasets array
+          const dataset = {
+            id: result.datasetId,
+            name: file.name,
+            size: file.size,
+            type: file.type,
+            uploadedAt: new Date().toISOString(),
+            chunks: result.chunks || 0
+          };
+          
+          datasets.push(dataset);
+          updateDatasetList();
+          addMessage(`✅ Successfully uploaded "${file.name}" and created ${result.chunks} knowledge chunks.`, false);
+        } else {
+          addMessage(`❌ Failed to upload "${file.name}": ${result.error}`, false);
+        }
+      } catch (error) {
+        addMessage(`❌ Error uploading "${file.name}": ${error.message}`, false);
+      } finally {
+        processingIndicator.style.display = 'none';
+      }
+    }
+
+    function updateDatasetList() {
+      const datasetList = document.getElementById('dataset-list');
+      datasetList.innerHTML = '';
+
+      if (datasets.length === 0) {
+        datasetList.innerHTML = '<div style="color: #666; font-style: italic; text-align: center;">No datasets uploaded yet</div>';
+        return;
+      }
+
+      datasets.forEach(dataset => {
+        const datasetItem = document.createElement('div');
+        datasetItem.className = 'dataset-item';
+        
+        const fileSize = (dataset.size / 1024 / 1024).toFixed(2);
+        const uploadDate = new Date(dataset.uploadedAt).toLocaleDateString();
+        
+        datasetItem.innerHTML = `
+          <div class="dataset-info">
+            <div class="dataset-name">${dataset.name}</div>
+            <div class="dataset-meta">${fileSize} MB • ${uploadDate} • ${dataset.chunks} chunks</div>
+          </div>
+          <div class="dataset-actions">
+            <button class="btn-small btn-remove" onclick="removeDataset('${dataset.id}')">Remove</button>
+          </div>
+        `;
+        
+        datasetList.appendChild(datasetItem);
+      });
+    }
+
+    async function removeDataset(datasetId) {
+      if (confirm('Are you sure you want to remove this dataset?')) {
+        try {
+          const response = await fetch(`/api/remove-dataset/${datasetId}`, {
+            method: 'DELETE'
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            datasets = datasets.filter(d => d.id !== datasetId);
+            updateDatasetList();
+            addMessage(`🗑️ Dataset removed successfully.`, false);
+          } else {
+            addMessage(`❌ Failed to remove dataset: ${result.error}`, false);
+          }
+        } catch (error) {
+          addMessage(`❌ Error removing dataset: ${error.message}`, false);
+        }
+      }
+    }
+
+    // Load existing datasets on page load
+    async function loadDatasets() {
+      try {
+        const response = await fetch('/api/datasets');
+        const result = await response.json();
+        
+        if (result.success) {
+          datasets = result.datasets || [];
+          updateDatasetList();
+        }
+      } catch (error) {
+        console.log('Failed to load datasets:', error);
+      }
+    }
+
+    // Auto-resize textarea
+    document.getElementById('question').addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+    });
+
+    // Category dropdown functionality
+    document.getElementById('category-select').addEventListener('change', function() {
+      const selectedValue = this.value;
+      const questionInput = document.getElementById('question');
+      
+      if (selectedValue) {
+        questionInput.value = selectedValue;
+        questionInput.focus();
+        // Trigger auto-resize
+        questionInput.style.height = 'auto';
+        questionInput.style.height = Math.min(questionInput.scrollHeight, 120) + 'px';
+      }
+    });
+
+    // Initialize
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      createDots();
+      // Recreate bubbles on resize
+      const bubbles = document.querySelectorAll('.bubble');
+      bubbles.forEach(bubble => bubble.remove());
+      createBubbles();
+    });
+    resizeCanvas(); 
+    createDots(); 
+    animate();
+    createBubbles(); // Create floating bubbles
+    checkLoginStatus();
+    displayRandomFact();
+    initializeFileUpload(); // Initialize for all users
+  </script>
+</body>
+</html>

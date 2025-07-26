@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login | microplastics.ai</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(120deg, #b3e0ff 0%, #7fd8f7 50%, #f7cfff 100%);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 1rem;
+    }
+    .auth-container {
+      background: rgba(255,255,255,0.95);
+      padding: 2rem;
+      border-radius: 18px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+      max-width: 380px;
+      width: 100%;
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #1a4d6e;
+    }
+    input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      margin: 0.5rem 0;
+      border: 1.5px solid #a3cfff;
+      border-radius: 12px;
+      font-size: 1rem;
+    }
+    button {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 1rem;
+      background: linear-gradient(to right, #7fd8f7, #f7cfff);
+      border: none;
+      border-radius: 12px;
+      color: #1a4d6e;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .switch {
+      text-align: center;
+      margin-top: 1rem;
+      cursor: pointer;
+      color: #1a4d6e;
+      font-weight: 600;
+    }
+    .message {
+      text-align: center;
+      margin-top: 1rem;
+      color: #d13c3c;
+      font-weight: 600;
+    }
+    .message.success {
+      color: #1a6e3c;
+    }
+    .bubble {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      animation: float 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0.7;
+      }
+      50% {
+        transform: translateY(-20px) rotate(180deg);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <h2 id="form-title">Login</h2>
+    <div class="message" id="msg"></div>
+    <form id="auth-form">
+      <input type="text" id="username" placeholder="Username" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <input type="password" id="confirm" placeholder="Confirm Password" style="display: none;" />
+      <button type="submit" id="submit-btn">Login</button>
+    </form>
+    <div class="switch" id="toggle-link">Don't have an account? Sign up</div>
+  </div>
+
+  <script>
+    function createBubbles() {
+      const colors = ['#ffffff', '#b3e0ff', '#f7cfff', '#c7f7e6', '#f7f7cf', '#d1cfff'];
+      
+      for (let i = 0; i < 12; i++) {
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        
+        const size = Math.random() * 20 + 10;
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * window.innerHeight;
+        const delay = Math.random() * 6;
+        const duration = Math.random() * 3 + 4;
+        
+        bubble.style.width = size + 'px';
+        bubble.style.height = size + 'px';
+        bubble.style.left = x + 'px';
+        bubble.style.top = y + 'px';
+        bubble.style.animationDelay = delay + 's';
+        bubble.style.animationDuration = duration + 's';
+        bubble.style.background = colors[Math.floor(Math.random() * colors.length)];
+        
+        document.body.appendChild(bubble);
+      }
+    }
+
+    // Create bubbles on page load
+    createBubbles();
+
+    // Recreate bubbles on window resize
+    window.addEventListener('resize', () => {
+      const bubbles = document.querySelectorAll('.bubble');
+      bubbles.forEach(bubble => bubble.remove());
+      createBubbles();
+    });
+
+    const isLoginMode = { value: true };
+    const msg = document.getElementById('msg');
+    const toggleLink = document.getElementById('toggle-link');
+    const confirm = document.getElementById('confirm');
+    const formTitle = document.getElementById('form-title');
+    const submitBtn = document.getElementById('submit-btn');
+
+    toggleLink.onclick = () => {
+      isLoginMode.value = !isLoginMode.value;
+      confirm.style.display = isLoginMode.value ? 'none' : 'block';
+      formTitle.textContent = isLoginMode.value ? 'Login' : 'Sign Up';
+      submitBtn.textContent = isLoginMode.value ? 'Login' : 'Sign Up';
+      toggleLink.textContent = isLoginMode.value
+        ? "Don't have an account? Sign up"
+        : "Already have an account? Login";
+      msg.textContent = '';
+    };
+
+    document.getElementById('auth-form').onsubmit = async (e) => {
+      e.preventDefault();
+      msg.textContent = '';
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const password2 = document.getElementById('confirm').value;
+
+      if (!isLoginMode.value && password !== password2) {
+        msg.textContent = 'Passwords do not match.';
+        return;
+      }
+
+      const route = isLoginMode.value ? '/api/login' : '/api/register';
+      const res = await fetch(route, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        msg.textContent = isLoginMode.value ? 'Login successful!' : 'Sign up successful!';
+        msg.className = 'message success';
+        setTimeout(() => window.location = 'ai.html', 1000);
+      } else {
+        msg.textContent = data.error || 'Something went wrong.';
+        msg.className = 'message';
+      }
+    };
+  </script>
+</body>
+</html>

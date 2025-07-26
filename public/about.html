@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>About | microplastics.ai</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      min-height: 100vh;
+      background: #b3e0ff;
+      font-family: 'Inter', Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .background {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .card {
+      position: relative;
+      z-index: 1;
+      background: rgba(255,255,255,0.95);
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(0,60,120,0.12);
+      padding: 2.5rem 2rem 2rem 2rem;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+    h1 {
+      color: #1a4d6e;
+      margin-bottom: 1.5rem;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    p {
+      color: #1a4d6e;
+      font-size: 1.1rem;
+      margin-bottom: 1.2rem;
+      line-height: 1.6;
+    }
+    .back-btn {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.7rem 2rem;
+      border-radius: 18px;
+      border: none;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1a4d6e;
+      background: linear-gradient(90deg, #7fd8f7 0%, #b3e0ff 100%);
+      box-shadow: 0 2px 8px rgba(0,60,120,0.08);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .back-btn:hover {
+      background: linear-gradient(90deg, #b3e0ff 0%, #7fd8f7 100%);
+      transform: translateY(-2px) scale(1.03);
+    }
+    @media (max-width: 600px) {
+      .card {
+        padding: 1.2rem 0.5rem 1.5rem 0.5rem;
+        max-width: 98vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas class="background"></canvas>
+  <div class="card">
+    <h1>About microplastics.ai</h1>
+    <p><b>What are microplastics?</b><br>
+    Microplastics are tiny plastic particles, less than 5mm in size, that pollute our oceans, rivers, and even the air we breathe. They come from broken-down larger plastics, synthetic clothing fibers, and many everyday products. Microplastics can harm marine life and may even enter the food chain, affecting humans too.</p>
+    <p><b>How does AI help?</b><br>
+    Artificial Intelligence (AI) can help scientists detect, track, and understand microplastics. By analyzing images, data, and patterns, AI can speed up research, identify pollution sources, and suggest solutions. microplastics.ai uses advanced AI to answer your questions and spread awareness about this important issue.</p>
+    <a href="index.html" class="back-btn">Back to Home</a>
+  </div>
+  <script>
+    // Floating microplastics dots animation
+    const canvas = document.querySelector('.background');
+    const ctx = canvas.getContext('2d');
+    let dots = [];
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    function randomColor() {
+      const colors = [
+        '#ffffff', // white
+        '#e6f7ff', // light blue
+        '#b3e0ff', // baby blue
+        '#f7cfff', // light pink
+        '#c7f7e6', // light green
+        '#f7f7cf', // light yellow
+        '#d1cfff'  // light purple
+      ];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+    function createDots() {
+      dots = [];
+      const count = Math.floor(window.innerWidth / 20);
+      for (let i = 0; i < count; i++) {
+        dots.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: 2 + Math.random() * 4,
+          color: randomColor(),
+          speed: 0.2 + Math.random() * 0.5,
+          drift: (Math.random() - 0.5) * 0.2
+        });
+      }
+    }
+    createDots();
+    window.addEventListener('resize', createDots);
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let dot of dots) {
+        ctx.beginPath();
+        ctx.arc(dot.x, dot.y, dot.r, 0, 2 * Math.PI);
+        ctx.fillStyle = dot.color;
+        ctx.globalAlpha = 0.7;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+        dot.y -= dot.speed;
+        dot.x += dot.drift;
+        if (dot.y < -10) {
+          dot.y = canvas.height + 10;
+          dot.x = Math.random() * canvas.width;
+        }
+        if (dot.x < -10) dot.x = canvas.width + 10;
+        if (dot.x > canvas.width + 10) dot.x = -10;
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+</body>
+</html> 
