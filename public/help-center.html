@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Help Center | PlastixThinker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Get help and support for PlastixThinker. Contact us for urgent issues or submit a form for general inquiries.">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap');
+    
+    :root {
+      --primary: #1a1a1a;
+      --secondary: #f8f9fa;
+      --accent: #007bff;
+      --accent-hover: #0056b3;
+      --text-primary: #1a1a1a;
+      --text-secondary: #6c757d;
+      --text-light: #ffffff;
+      --border: #e9ecef;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      --shadow-light: 0 5px 15px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.15);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --gradient-primary: linear-gradient(135deg, #007bff, #0056b3);
+      --gradient-secondary: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+    }
+    
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+    
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 100px;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: var(--text-primary);
+      background: var(--text-light);
+      overflow-x: hidden;
+      font-weight: 400;
+    }
+
+    /* Navigation */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      transition: var(--transition);
+    }
+
+    .navbar.scrolled {
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: var(--shadow-light);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      font-size: 1.75rem;
+      color: var(--text-primary);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+      transition: var(--transition);
+    }
+
+    .nav-logo:hover {
+      transform: translateY(-2px);
+      color: var(--accent);
+    }
+
+    .nav-logo-icon {
+      font-size: 2.5rem;
+      color: var(--accent);
+      transition: var(--transition);
+    }
+
+    .nav-logo:hover .nav-logo-icon {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 3rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: var(--transition);
+      position: relative;
+      letter-spacing: 0.2px;
+      padding: 0.5rem 0;
+    }
+
+    .nav-link:hover {
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      background: var(--gradient-primary);
+      color: var(--text-light);
+      padding: 0.875rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: var(--transition);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-cta::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .nav-cta:hover::before {
+      left: 100%;
+    }
+
+    .nav-cta:hover {
+      background: var(--accent-hover);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-primary);
+      cursor: pointer;
+    }
+
+    /* Page Header */
+    .page-header {
+      background: var(--gradient-secondary);
+      padding: 120px 0 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(0, 123, 255, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(108, 117, 125, 0.05) 0%, transparent 50%);
+    }
+
+    .header-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.5px;
+    }
+
+    .page-subtitle {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-weight: 400;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Help Options */
+    .help-options {
+      padding: 6rem 0;
+      background: var(--text-light);
+    }
+
+    .options-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 3rem;
+      margin-top: 4rem;
+    }
+
+    .help-option {
+      background: var(--text-light);
+      border-radius: 16px;
+      padding: 3rem 2.5rem;
+      box-shadow: var(--shadow-light);
+      border: 1px solid var(--border);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .help-option::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-primary);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .help-option:hover::before {
+      transform: scaleX(1);
+    }
+
+    .help-option:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--accent);
+    }
+
+    .option-icon {
+      width: 80px;
+      height: 80px;
+      background: var(--gradient-primary);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: white;
+      margin: 0 auto 2rem;
+      box-shadow: var(--shadow-light);
+      transition: var(--transition);
+    }
+
+    .help-option:hover .option-icon {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: var(--shadow);
+    }
+
+    .option-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      letter-spacing: -0.3px;
+    }
+
+    .option-description {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      font-weight: 400;
+    }
+
+    .option-badge {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: var(--success);
+      color: white;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 1.5rem;
+    }
+
+    .option-badge.urgent {
+      background: var(--error);
+    }
+
+    .option-badge.non-urgent {
+      background: var(--warning);
+    }
+
+    .contact-info {
+      background: var(--secondary);
+      padding: 2rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+    }
+
+    .contact-email {
+      font-size: 1.25rem;
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.5rem;
+      transition: var(--transition);
+    }
+
+    .contact-email:hover {
+      color: var(--accent-hover);
+      transform: translateY(-2px);
+    }
+
+    .contact-note {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .form-embed {
+      width: 100%;
+      height: 600px;
+      border: none;
+      border-radius: 12px;
+      box-shadow: var(--shadow-light);
+      transition: var(--transition);
+    }
+
+    .form-embed:hover {
+      box-shadow: var(--shadow);
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      padding: 6rem 0;
+      background: var(--secondary);
+    }
+
+    .faq-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .faq-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 2.5rem);
+      font-weight: 600;
+      color: var(--text-primary);
+      text-align: center;
+      margin-bottom: 3rem;
+      letter-spacing: -0.3px;
+    }
+
+    .faq-item {
+      background: var(--text-light);
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-light);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .faq-item:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .faq-question {
+      padding: 1.5rem 2rem;
+      background: var(--text-light);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      color: var(--text-primary);
+      transition: var(--transition);
+    }
+
+    .faq-question:hover {
+      background: var(--secondary);
+    }
+
+    .faq-question.active {
+      background: var(--accent);
+      color: var(--text-light);
+    }
+
+    .faq-toggle {
+      font-size: 1.2rem;
+      transition: var(--transition);
+    }
+
+    .faq-question.active .faq-toggle {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      padding: 0 2rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      background: var(--text-light);
+    }
+
+    .faq-answer.active {
+      padding: 1.5rem 2rem;
+      max-height: 200px;
+    }
+
+    .faq-answer p {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .faq-answer p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Back to Home */
+    .back-home {
+      padding: 4rem 0;
+      background: var(--text-light);
+      text-align: center;
+    }
+
+    .back-home .btn {
+      background: var(--gradient-primary);
+      color: var(--text-light);
+      padding: 1rem 2.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .back-home .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .back-home .btn:hover::before {
+      left: 100%;
+    }
+
+    .back-home .btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .nav-menu {
+        display: none;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .options-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .help-option {
+        padding: 2rem 1.5rem;
+      }
+
+      .form-embed {
+        height: 500px;
+      }
+
+      .nav-container {
+        padding: 0 1rem;
+      }
+
+      .options-container,
+      .faq-container {
+        padding: 0 1rem;
+      }
+    }
+
+    /* Animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stagger-1 { transition-delay: 0.1s; }
+    .stagger-2 { transition-delay: 0.2s; }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-icon">🐋</span>
+        PlastixThinker
+      </a>
+      <ul class="nav-menu">
+        <li><a href="index.html#features" class="nav-link">Features</a></li>
+        <li><a href="index.html#how-it-works" class="nav-link">How It Works</a></li>
+        <li><a href="index.html#about" class="nav-link">About</a></li>
+                 <li><a href="chat.html" class="nav-cta">Try PlastixThinker</a></li>
+      </ul>
+      <button class="mobile-menu-btn" id="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <section class="page-header">
+    <div class="header-container">
+      <h1 class="page-title">Help Center</h1>
+      <p class="page-subtitle">
+        Need help with PlastixThinker? We're here to support you. Choose the option that best fits your needs.
+      </p>
+    </div>
+  </section>
+
+  <!-- Help Options -->
+  <section class="help-options">
+    <div class="options-container">
+      <div class="options-grid">
+        <!-- Urgent Help -->
+        <div class="help-option fade-in">
+          <div class="option-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <div class="option-badge urgent">Urgent</div>
+          <h2 class="option-title">Need Immediate Help?</h2>
+          <p class="option-description">
+            For critical issues, technical problems, or urgent matters that need immediate attention.
+          </p>
+          <div class="contact-info">
+                         <a href="mailto:plastixtinker@gmail.com" class="contact-email">
+               plastixtinker@gmail.com
+             </a>
+            <p class="contact-note">
+              We'll respond within 2-4 hours during business hours
+            </p>
+          </div>
+        </div>
+
+        <!-- Non-Urgent Help -->
+        <div class="help-option fade-in stagger-1">
+          <div class="option-icon">
+            <i class="fas fa-question-circle"></i>
+          </div>
+          <div class="option-badge non-urgent">1-2 Days</div>
+          <h2 class="option-title">General Questions?</h2>
+          <p class="option-description">
+            For feature requests, general inquiries, or non-urgent questions that can wait 1-2 days.
+          </p>
+                     <iframe 
+             src="https://docs.google.com/forms/d/e/1FAIpQLScpby79AibjwtWKQbtcxRRKIxXiMpXwjRhHjHxGo5A7VP0Q8A/viewform?embedded=true" 
+             class="form-embed"
+             title="Contact Form">
+             Loading…
+           </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section">
+    <div class="faq-container">
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      
+      <div class="faq-item fade-in">
+        <div class="faq-question" data-faq="faq1">
+          How do I get started with PlastixThinker?
+          <i class="fas fa-chevron-down faq-toggle"></i>
+        </div>
+        <div class="faq-answer">
+                     <p>Getting started is easy! Simply visit our dedicated chat page and start chatting with PlastixThinker, our AI environmental expert. You can also upload documents to get personalized insights.</p>
+        </div>
+      </div>
+
+      <div class="faq-item fade-in stagger-1">
+        <div class="faq-question" data-faq="faq2">
+          What types of files can I upload?
+          <i class="fas fa-chevron-down faq-toggle"></i>
+        </div>
+        <div class="faq-answer">
+          <p>We support PDF, TXT, DOC, and DOCX files. These can include research papers, articles, educational materials, or any documents related to microplastics and ocean conservation.</p>
+        </div>
+      </div>
+
+      <div class="faq-item fade-in stagger-2">
+        <div class="faq-question" data-faq="faq3">
+          Is my data secure?
+          <i class="fas fa-chevron-down faq-toggle"></i>
+        </div>
+        <div class="faq-answer">
+          <p>Yes, we take data security seriously. All uploaded documents are processed securely, and we use industry-standard encryption to protect your information. We never share your data with third parties.</p>
+        </div>
+      </div>
+
+      <div class="faq-item fade-in stagger-2">
+        <div class="faq-question" data-faq="faq4">
+          Can I use PlastixThinker for educational purposes?
+          <i class="fas fa-chevron-down faq-toggle"></i>
+        </div>
+        <div class="faq-answer">
+          <p>Absolutely! PlastixThinker is designed for educational use. Teachers, students, researchers, and anyone interested in learning about microplastics can benefit from our AI-powered platform.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Back to Home -->
+  <section class="back-home">
+    <a href="index.html" class="btn">
+      <i class="fas fa-home"></i>
+      Back to Home
+    </a>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

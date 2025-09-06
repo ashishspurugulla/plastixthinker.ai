@@ -2,111 +2,1268 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>microplastics.ai</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PlastixThinker - Advanced AI Solutions for Environmental Protection</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap');
+    
+    :root {
+      --primary: #0f172a;
+      --secondary: #f8fafc;
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --text-light: #ffffff;
+      --border: #e2e8f0;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --transition: all 0.2s ease-in-out;
+      --gradient-primary: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      --gradient-hero: linear-gradient(135deg, #0f172a, #1e293b);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+    }
+    
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+    
     body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(120deg, #b3e0ff 0%, #7fd8f7 60%, #f7cfff 100%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: var(--text-primary);
+      background: var(--text-light);
+      overflow-x: hidden;
+      font-weight: 400;
+    }
+
+    /* Navigation */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      transition: var(--transition);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 70px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      font-size: 1.5rem;
+      color: var(--text-primary);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+      transition: var(--transition);
+    }
+
+    .nav-logo:hover {
+      color: var(--accent);
+    }
+
+    .nav-logo-icon {
+      font-size: 2rem;
+      color: var(--accent);
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: var(--transition);
+      padding: 0.5rem 0;
+    }
+
+    .nav-link:hover {
+      color: var(--accent);
+    }
+
+    .nav-cta {
+      background: var(--gradient-primary);
+      color: var(--text-light);
+      padding: 0.5rem 1.5rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Hero Section */
+    .hero {
+      background: var(--gradient-hero);
+      color: var(--text-light);
+      padding: 120px 0 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+      opacity: 0.3;
+    }
+
+    .hero-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent);
+      color: var(--text-light);
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: var(--transition);
+      margin: 0 0.5rem;
+    }
+
+    .hero-cta:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hero-cta.secondary {
+      background: transparent;
+      border: 2px solid var(--text-light);
+    }
+
+    .hero-cta.secondary:hover {
+      background: var(--text-light);
+      color: var(--text-primary);
+    }
+
+    /* Features Section */
+    .features {
+      padding: 80px 0;
+      background: var(--secondary);
+    }
+
+    .features-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .section-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .feature-card {
+      background: var(--text-light);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+    }
+
+    .feature-description {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* AI Chat Section */
+    .ai-section {
+      padding: 80px 0;
+      background: var(--text-light);
+    }
+
+    .ai-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .ai-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+    }
+
+    .ai-content p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .ai-features {
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+
+    .ai-features li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .ai-features li::before {
+      content: '✓';
+      background: var(--success);
+      color: var(--text-light);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    /* Chat Widget */
+    .chat-widget {
+      background: var(--text-light);
+      border-radius: 12px;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      height: 500px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      background: var(--gradient-primary);
+      color: var(--text-light);
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .chat-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .chat-subtitle {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem;
+      background: var(--secondary);
+    }
+
+    .message {
+      margin-bottom: 1rem;
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+
+    .message.user {
+      flex-direction: row-reverse;
+    }
+
+    .message-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .message.user .message-avatar {
+      background: var(--accent);
+      color: var(--text-light);
+    }
+
+    .message.ai .message-avatar {
+      background: var(--gradient-primary);
+      color: var(--text-light);
+    }
+
+    .message-content {
+      background: var(--text-light);
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      max-width: 75%;
+      line-height: 1.5;
+      font-size: 0.9rem;
+      border: 1px solid var(--border);
+    }
+
+    .message.user .message-content {
+      background: var(--accent);
+      color: var(--text-light);
+    }
+
+    .message.ai .message-content {
+      background: var(--text-light);
+      color: var(--text-primary);
+    }
+
+    .chat-input-container {
+      padding: 1.5rem;
+      background: var(--text-light);
+      border-top: 1px solid var(--border);
+    }
+
+    .chat-input-form {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-end;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      resize: none;
+      min-height: 44px;
+      max-height: 100px;
+      transition: var(--transition);
+      background: var(--secondary);
+    }
+
+    .chat-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      background: var(--text-light);
+    }
+
+    .send-button {
+      background: var(--gradient-primary);
+      color: var(--text-light);
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .send-button:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .send-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .typing-indicator {
+      display: none;
+      padding: 0.75rem 1rem;
+      background: var(--text-light);
+      border-radius: 12px;
+      color: var(--text-secondary);
+      font-style: italic;
+      font-size: 0.85rem;
+      border: 1px solid var(--border);
+    }
+
+    .typing-indicator.show {
+      display: block;
+    }
+
+    /* Quick Actions */
+    .quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .quick-action {
+      padding: 0.5rem 1rem;
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 0.8rem;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .quick-action:hover {
+      background: var(--accent);
+      color: var(--text-light);
+      transform: translateY(-1px);
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--primary);
+      color: var(--text-light);
+      padding: 3rem 0 2rem;
+      text-align: center;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-section h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .footer-section p,
+    .footer-section a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .footer-section a:hover {
+      color: var(--accent);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--text-secondary);
+      padding-top: 2rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    /* About Section */
+    .about-section {
+      padding: 6rem 0;
+      background: var(--secondary);
+    }
+
+    .about-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .about-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2.5rem;
+      margin-top: 4rem;
+    }
+
+    .about-card {
+      background: var(--text-light);
+      padding: 2.5rem;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-primary);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .about-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .about-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--accent);
+    }
+
+    .about-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .about-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      letter-spacing: -0.3px;
+    }
+
+    .about-description {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 1rem;
+      margin-bottom: 0;
+    }
+
+    .about-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .about-list li {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    .about-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--success);
+      font-weight: bold;
+    }
+
+    .about-list li:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Features Highlight */
+    .features-highlight {
+      margin-top: 5rem;
+      text-align: center;
+    }
+
+    .highlight-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 3rem;
+      letter-spacing: -0.3px;
+    }
+
+    .highlight-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .highlight-item {
+      background: var(--text-light);
+      padding: 2rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      transition: var(--transition);
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      min-height: 100vh;
-      overflow: hidden;
-      position: relative;
+      gap: 1rem;
     }
-    h1 {
-      color: #000000;
-      font-size: 2.4rem;
-      margin-bottom: 1.5rem;
-      font-weight: bold;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      z-index: 10;
-      position: relative;
+
+    .highlight-item:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--accent);
     }
-    .btn {
-      padding: 1rem 2rem;
-      margin: 1rem;
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #1a4d6e;
-      background: linear-gradient(90deg, #7fd8f7, #b3e0ff);
-      border: none;
-      border-radius: 16px;
-      cursor: pointer;
-      transition: transform 0.2s;
-      text-decoration: none;
-      display: inline-block;
-      z-index: 10;
-      position: relative;
+
+    .highlight-icon {
+      font-size: 2.5rem;
     }
-    .btn:hover {
-      transform: scale(1.05);
-      background: linear-gradient(90deg, #b3e0ff, #7fd8f7);
+
+    .highlight-text {
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 1rem;
     }
-    .bubble {
-      position: absolute;
-      background: rgba(255, 255, 255, 0.6);
-      border-radius: 50%;
-      animation: float 6s ease-in-out infinite;
-      pointer-events: none;
-    }
-    @keyframes float {
-      0%, 100% {
-        transform: translateY(0px) rotate(0deg);
-        opacity: 0.7;
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .nav-menu {
+        display: none;
       }
-      50% {
-        transform: translateY(-20px) rotate(180deg);
-        opacity: 1;
+
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.1rem;
+      }
+
+      .ai-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+      }
+
+      .hero-cta {
+        display: block;
+        margin: 0.5rem 0;
+      }
+
+      .about-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .about-card {
+        padding: 2rem 1.5rem;
+      }
+
+      .highlight-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+
+      .highlight-item {
+        padding: 1.5rem 1rem;
+      }
+
+      .highlight-icon {
+        font-size: 2rem;
+      }
+
+      .highlight-text {
+        font-size: 0.9rem;
       }
     }
   </style>
 </head>
 <body>
-  <h1>Welcome to microplastics.ai</h1>
-  <a href="auth.html" class="btn">Login / Sign Up</a>
-  <a href="ai.html" class="btn">Ask Microplastic</a>
-  <a href="about.html" class="btn">Learn More</a>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">
+        <span class="nav-logo-icon">🌊</span>
+        PlastixThinker
+      </a>
+      <ul class="nav-menu">
+        <li><a href="#features" class="nav-link">Features</a></li>
+        <li><a href="chat.html" class="nav-link">PlastixThinker</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+        <li><a href="#ai" class="nav-cta">Try AI</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-container">
+      <h1 class="hero-title">Advanced AI Solutions for Environmental Protection</h1>
+      <p class="hero-subtitle">
+        Harnessing the power of artificial intelligence to combat microplastic pollution and protect our oceans. 
+        Get instant answers, expert insights, and actionable solutions.
+      </p>
+      <div class="hero-buttons">
+        <a href="chat.html" class="hero-cta">Try PlastixThinker</a>
+        <a href="#features" class="hero-cta secondary">Learn More</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="features-container">
+      <div class="section-header">
+        <h2 class="section-title">Why Choose PlastixThinker?</h2>
+        <p class="section-subtitle">
+          Our AI-powered platform provides comprehensive solutions for understanding and combating microplastic pollution
+        </p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🤖</div>
+          <h3 class="feature-title">AI-Powered Insights</h3>
+          <p class="feature-description">
+            Get instant, accurate answers to complex environmental questions using advanced AI technology.
+          </p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">📚</div>
+          <h3 class="feature-title">Expert Knowledge</h3>
+          <p class="feature-description">
+            Access comprehensive information about microplastics, their impact, and the latest solutions.
+          </p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">🌍</div>
+          <h3 class="feature-title">Environmental Focus</h3>
+          <p class="feature-description">
+            Dedicated to protecting our oceans and marine life through education and actionable solutions.
+          </p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3 class="feature-title">Instant Access</h3>
+          <p class="feature-description">
+            No waiting, no downloads. Get answers immediately through our web-based PlastixThinker.
+          </p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">🔬</div>
+          <h3 class="feature-title">Scientific Accuracy</h3>
+          <p class="feature-description">
+            Based on the latest scientific research and environmental studies for reliable information.
+          </p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">💡</div>
+          <h3 class="feature-title">Actionable Solutions</h3>
+          <p class="feature-description">
+            Get practical advice and solutions you can implement to reduce your environmental impact.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Chat Section -->
+  <section class="ai-section" id="ai">
+    <div class="ai-container">
+      <div class="ai-content">
+        <h2>Your AI Environmental Expert</h2>
+        <p>
+          Our advanced PlastixThinker is trained on the latest environmental research and can help you understand 
+          complex topics related to microplastics, ocean conservation, and environmental protection.
+        </p>
+        
+        <ul class="ai-features">
+          <li>Instant answers to environmental questions</li>
+          <li>Latest research and scientific data</li>
+          <li>Practical solutions and recommendations</li>
+          <li>Educational content and explanations</li>
+          <li>24/7 availability and support</li>
+        </ul>
+        
+        <div class="quick-actions">
+          <div class="quick-action" onclick="askQuestion('What are microplastics and why are they a problem?')">
+            What are microplastics?
+          </div>
+          <div class="quick-action" onclick="askQuestion('How do microplastics affect marine life?')">
+            Marine impact
+          </div>
+          <div class="quick-action" onclick="askQuestion('How can I reduce microplastic pollution?')">
+            Reduce pollution
+          </div>
+          <div class="quick-action" onclick="askQuestion('What are the latest solutions for microplastic removal?')">
+            Latest solutions
+          </div>
+        </div>
+      </div>
+      
+      <div class="chat-widget">
+        <div class="chat-header">
+          <h3 class="chat-title">PlastixThinker</h3>
+          <p class="chat-subtitle">Ask me anything about microplastics</p>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+          <div class="message ai">
+            <div class="message-avatar">🤖</div>
+            <div class="message-content">
+              Hello! I'm your AI environmental expert. I can help you understand microplastics, their impact, and solutions. What would you like to learn about?
+            </div>
+          </div>
+        </div>
+
+        <div class="typing-indicator" id="typingIndicator">
+          AI is thinking...
+        </div>
+
+        <div class="chat-input-container">
+          <form class="chat-input-form" id="chatForm">
+            <textarea 
+              class="chat-input" 
+              id="chatInput" 
+              placeholder="Ask me anything about microplastics, environmental solutions, or related topics..."
+              rows="1"
+            ></textarea>
+            <button type="submit" class="send-button" id="sendButton">
+              <span>Send</span>
+              <span>→</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about-section" id="about">
+    <div class="about-container">
+      <div class="section-header">
+        <h2 class="section-title">About PlastixThinker</h2>
+        <p class="section-subtitle">
+          Discover our mission, purpose, and the technology behind our AI environmental expert
+        </p>
+      </div>
+      
+      <div class="about-content">
+        <!-- Mission & Vision -->
+        <div class="about-card">
+          <div class="about-icon">🎯</div>
+          <h3 class="about-title">Our Mission</h3>
+          <p class="about-description">
+            To democratize environmental education and empower individuals worldwide with AI-powered insights about microplastics and ocean conservation. We believe that knowledge is the first step toward meaningful environmental action.
+          </p>
+        </div>
+
+        <div class="about-card">
+          <div class="about-icon">🌟</div>
+          <h3 class="about-title">Our Vision</h3>
+          <p class="about-description">
+            A world where everyone has access to accurate, up-to-date information about environmental challenges and the tools to make informed decisions that protect our oceans and marine ecosystems.
+          </p>
+        </div>
+
+        <!-- Purpose & Goals -->
+        <div class="about-card">
+          <div class="about-icon">💡</div>
+          <h3 class="about-title">Our Purpose</h3>
+          <p class="about-description">
+            PlastixThinker serves as a bridge between complex scientific research and public understanding. We translate cutting-edge environmental science into accessible, actionable knowledge that inspires positive change.
+          </p>
+        </div>
+
+        <div class="about-card">
+          <div class="about-icon">🎯</div>
+          <h3 class="about-title">Our Goals</h3>
+          <ul class="about-list">
+            <li>Educate 1 million+ people about microplastic pollution</li>
+            <li>Provide instant access to environmental research</li>
+            <li>Inspire individual and collective action</li>
+            <li>Support scientific literacy and environmental awareness</li>
+            <li>Bridge the gap between research and public understanding</li>
+          </ul>
+        </div>
+
+        <!-- Technology & Innovation -->
+        <div class="about-card">
+          <div class="about-icon">🤖</div>
+          <h3 class="about-title">AI Technology</h3>
+          <p class="about-description">
+            Built on advanced language models and trained on extensive environmental research, PlastixThinker combines the power of artificial intelligence with scientific accuracy to provide reliable, up-to-date information about microplastics and environmental solutions.
+          </p>
+        </div>
+
+        <div class="about-card">
+          <div class="about-icon">🔬</div>
+          <h3 class="about-title">Scientific Foundation</h3>
+          <p class="about-description">
+            Our AI is trained on peer-reviewed research papers, environmental studies, and the latest scientific findings. We maintain high standards for accuracy and regularly update our knowledge base with new discoveries and research.
+          </p>
+        </div>
+
+        <!-- Impact & Reach -->
+        <div class="about-card">
+          <div class="about-icon">🌍</div>
+          <h3 class="about-title">Global Impact</h3>
+          <p class="about-description">
+            From students and educators to researchers and environmental activists, PlastixThinker serves a diverse global community. We're committed to making environmental education accessible to everyone, regardless of their background or location.
+          </p>
+        </div>
+
+        <div class="about-card">
+          <div class="about-icon">🤝</div>
+          <h3 class="about-title">Community & Collaboration</h3>
+          <p class="about-description">
+            We believe in the power of collaboration. PlastixThinker works with environmental organizations, research institutions, and educational partners to ensure our platform serves the broader environmental community effectively.
+          </p>
+        </div>
+      </div>
+
+      <!-- Key Features Highlight -->
+      <div class="features-highlight">
+        <h3 class="highlight-title">What Makes PlastixThinker Special</h3>
+        <div class="highlight-grid">
+          <div class="highlight-item">
+            <span class="highlight-icon">⚡</span>
+            <span class="highlight-text">Instant Responses</span>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-icon">🎓</span>
+            <span class="highlight-text">Educational Focus</span>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-icon">🔬</span>
+            <span class="highlight-text">Scientific Accuracy</span>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-icon">🌊</span>
+            <span class="highlight-text">Ocean Conservation</span>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-icon">💚</span>
+            <span class="highlight-text">Environmental Action</span>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-icon">🌐</span>
+            <span class="highlight-text">Global Accessibility</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" id="contact">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>PlastixThinker</h3>
+          <p>
+            Advanced AI solutions for environmental protection and microplastic education. 
+            Empowering individuals and organizations to make informed decisions.
+          </p>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <p><a href="#features">Features</a></p>
+          <p><a href="chat.html">PlastixThinker</a></p>
+          <p><a href="#about">About</a></p>
+          <p><a href="#contact">Contact</a></p>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Resources</h3>
+          <p><a href="#">Research Papers</a></p>
+          <p><a href="#">Environmental Data</a></p>
+          <p><a href="#">Educational Content</a></p>
+          <p><a href="#">Solutions Database</a></p>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <p>info@plastixtinker.ai</p>
+          <p>+1 (555) 123-4567</p>
+          <p>Environmental Tech Hub</p>
+          <p>San Francisco, CA</p>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2024 PlastixThinker. All rights reserved. | Protecting our oceans through AI innovation.</p>
+      </div>
+    </div>
+  </footer>
 
   <script>
-    function createBubbles() {
-      const colors = ['#ffffff', '#b3e0ff', '#f7cfff', '#c7f7e6', '#f7f7cf', '#d1cfff'];
-      
-      for (let i = 0; i < 15; i++) {
-        const bubble = document.createElement('div');
-        bubble.className = 'bubble';
+    // AI Chat functionality for PlastixThinker
+    document.addEventListener('DOMContentLoaded', function() {
+      const chatForm = document.getElementById('chatForm');
+      const chatInput = document.getElementById('chatInput');
+      const chatMessages = document.getElementById('chatMessages');
+      const sendButton = document.getElementById('sendButton');
+      const typingIndicator = document.getElementById('typingIndicator');
+
+      // Auto-resize textarea
+      chatInput.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+      });
+
+      // Handle form submission
+      chatForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
         
-        const size = Math.random() * 20 + 10;
-        const x = Math.random() * window.innerWidth;
-        const y = Math.random() * window.innerHeight;
-        const delay = Math.random() * 6;
-        const duration = Math.random() * 3 + 4;
-        
-        bubble.style.width = size + 'px';
-        bubble.style.height = size + 'px';
-        bubble.style.left = x + 'px';
-        bubble.style.top = y + 'px';
-        bubble.style.animationDelay = delay + 's';
-        bubble.style.animationDuration = duration + 's';
-        bubble.style.background = colors[Math.floor(Math.random() * colors.length)];
-        
-        document.body.appendChild(bubble);
+        const message = chatInput.value.trim();
+        if (!message) return;
+
+        await sendMessage(message);
+      });
+
+      // Global function for quick actions
+      window.askQuestion = async function(question) {
+        await sendMessage(question);
+      };
+
+      async function postJson(url, payload) {
+        try {
+          const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          return res;
+        } catch (e) {
+          return { ok: false, status: 0 };
+        }
       }
-    }
 
-    // Create bubbles on page load
-    createBubbles();
+      // Send message function
+      async function sendMessage(message) {
+        // Add user message to chat
+        addMessage(message, 'user');
+        
+        // Clear input and reset height
+        chatInput.value = '';
+        chatInput.style.height = 'auto';
+        
+        // Disable send button and show typing indicator
+        sendButton.disabled = true;
+        showTypingIndicator();
 
-    // Recreate bubbles on window resize
-    window.addEventListener('resize', () => {
-      const bubbles = document.querySelectorAll('.bubble');
-      bubbles.forEach(bubble => bubble.remove());
-      createBubbles();
+        try {
+          // Try multiple endpoints for maximum compatibility
+          const endpoints = ['/api/ai/ask', '/api/ask', '/ask'];
+          let response = null;
+          let data = null;
+
+          for (const endpoint of endpoints) {
+            const res = await postJson(endpoint, { question: message });
+            if (!res || !res.ok) continue;
+
+            // Try to parse JSON safely
+            try {
+              data = await res.json();
+            } catch (_) {
+              data = null;
+            }
+
+            if (data && (data.answer || (data.success && data.answer))) {
+              response = data;
+              break;
+            }
+          }
+
+          if (!response) {
+            throw new Error('No valid response from AI endpoints');
+          }
+
+          const answer = response.answer || (response.success && response.answer);
+          addMessage(answer, 'ai');
+
+        } catch (error) {
+          console.error('Error:', error);
+          addMessage('I apologize, but I\'m having trouble reaching the AI service. Please make sure the server is running and your API key is set. Then try again.', 'ai');
+        } finally {
+          hideTypingIndicator();
+          sendButton.disabled = false;
+          chatInput.focus();
+        }
+      }
+
+      // Add message to chat
+      function addMessage(content, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${sender}`;
+        
+        const avatar = document.createElement('div');
+        avatar.className = 'message-avatar';
+        avatar.textContent = sender === 'user' ? '👤' : '🤖';
+        
+        const messageContent = document.createElement('div');
+        messageContent.className = 'message-content';
+        messageContent.textContent = content;
+        
+        messageDiv.appendChild(avatar);
+        messageDiv.appendChild(messageContent);
+        
+        chatMessages.appendChild(messageDiv);
+        
+        // Scroll to bottom with smooth animation
+        setTimeout(() => {
+          chatMessages.scrollTo({
+            top: chatMessages.scrollHeight,
+            behavior: 'smooth'
+          });
+        }, 100);
+      }
+
+      // Show typing indicator
+      function showTypingIndicator() {
+        typingIndicator.classList.add('show');
+        setTimeout(() => {
+          chatMessages.scrollTo({
+            top: chatMessages.scrollHeight,
+            behavior: 'smooth'
+          });
+        }, 100);
+      }
+
+      // Hide typing indicator
+      function hideTypingIndicator() {
+        typingIndicator.classList.remove('show');
+      }
+
+      // Handle Enter key (submit on Enter, new line on Shift+Enter)
+      chatInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          chatForm.dispatchEvent(new Event('submit'));
+        }
+      });
+
+      // Add helpful tips after initial load
+      setTimeout(() => {
+        addMessage('💡 Tip: Click any quick action button to ask common questions, or type your own question below. I\'m here to help you learn about microplastics and environmental solutions!', 'ai');
+      }, 1500);
+
+      // Add another helpful tip after a delay
+      setTimeout(() => {
+        addMessage('🔍 You can ask me about specific topics like "microplastic detection methods", "biodegradable alternatives", or "ocean cleanup technologies". What interests you most?', 'ai');
+      }, 4000);
     });
   </script>
 </body>

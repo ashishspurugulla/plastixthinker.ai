@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat with PlastixThinker - AI Environmental Expert</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap');
+    
+    :root {
+      --primary: #0f172a;
+      --secondary: #f8fafc;
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --text-light: #ffffff;
+      --border: #e2e8f0;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --transition: all 0.2s ease-in-out;
+      --gradient-primary: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      --gradient-hero: linear-gradient(135deg, #0f172a, #1e293b);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+    }
+    
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: var(--text-primary);
+      background: var(--text-light);
+      overflow-x: hidden;
+      font-weight: 400;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navigation */
+    .navbar {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 70px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      font-size: 1.5rem;
+      color: var(--text-primary);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+      transition: var(--transition);
+    }
+
+    .nav-logo:hover {
+      color: var(--accent);
+    }
+
+    .nav-logo-icon {
+      font-size: 2rem;
+      color: var(--accent);
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: var(--transition);
+      padding: 0.5rem 0;
+    }
+
+    .nav-link:hover {
+      color: var(--accent);
+    }
+
+    .nav-cta {
+      background: var(--gradient-primary);
+      color: var(--text-light);
+      padding: 0.5rem 1.5rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Chat Container */
+    .chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 2rem;
+    }
+
+    /* Chat Header */
+    .chat-header {
+      background: var(--gradient-primary);
+      color: var(--text-light);
+      padding: 2rem;
+      text-align: center;
+      border-radius: 12px 12px 0 0;
+      margin-top: 2rem;
+    }
+
+    .chat-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .chat-subtitle {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    /* Chat Messages */
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 2rem;
+      background: var(--secondary);
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      min-height: 400px;
+      max-height: 60vh;
+    }
+
+    .message {
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .message.user {
+      flex-direction: row-reverse;
+    }
+
+    .message-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .message.user .message-avatar {
+      background: var(--accent);
+      color: var(--text-light);
+    }
+
+    .message.ai .message-avatar {
+      background: var(--gradient-primary);
+      color: var(--text-light);
+    }
+
+    .message-content {
+      background: var(--text-light);
+      padding: 1rem 1.5rem;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      max-width: 70%;
+      line-height: 1.6;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+    }
+
+    .message.user .message-content {
+      background: var(--accent);
+      color: var(--text-light);
+    }
+
+    .message.ai .message-content {
+      background: var(--text-light);
+      color: var(--text-primary);
+    }
+
+    /* Chat Input */
+    .chat-input-container {
+      padding: 2rem;
+      background: var(--text-light);
+      border: 1px solid var(--border);
+      border-radius: 0 0 12px 12px;
+      flex-shrink: 0;
+    }
+
+    .chat-input-form {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-end;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 1rem 1.5rem;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      font-size: 1rem;
+      font-family: inherit;
+      resize: none;
+      min-height: 60px;
+      max-height: 150px;
+      transition: var(--transition);
+      background: var(--secondary);
+    }
+
+    .chat-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      background: var(--text-light);
+    }
+
+    .send-button {
+      background: var(--gradient-primary);
+      color: var(--text-light);
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-width: 120px;
+      justify-content: center;
+    }
+
+    .send-button:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .send-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .typing-indicator {
+      display: none;
+      padding: 1rem 1.5rem;
+      background: var(--text-light);
+      border-radius: 16px;
+      color: var(--text-secondary);
+      font-style: italic;
+      font-size: 0.9rem;
+      border: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+
+    .typing-indicator.show {
+      display: block;
+    }
+
+    /* Quick Actions */
+    .quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 2rem;
+      justify-content: center;
+    }
+
+    .quick-action {
+      padding: 0.75rem 1.5rem;
+      background: var(--secondary);
+      border: 2px solid var(--border);
+      border-radius: 25px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .quick-action:hover {
+      background: var(--accent);
+      color: var(--text-light);
+      transform: translateY(-2px);
+      border-color: var(--accent);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .nav-menu {
+        display: none;
+      }
+
+      .chat-container {
+        padding: 0 1rem;
+      }
+
+      .chat-header {
+        padding: 1.5rem;
+        margin-top: 1rem;
+      }
+
+      .chat-title {
+        font-size: 1.5rem;
+      }
+
+      .chat-messages {
+        padding: 1.5rem;
+        max-height: 50vh;
+      }
+
+      .message-content {
+        max-width: 85%;
+        font-size: 0.9rem;
+        padding: 0.75rem 1rem;
+      }
+
+      .chat-input-container {
+        padding: 1.5rem;
+      }
+
+      .chat-input {
+        font-size: 0.9rem;
+        padding: 0.75rem 1rem;
+      }
+
+      .send-button {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+        min-width: 100px;
+      }
+
+      .quick-actions {
+        gap: 0.75rem;
+      }
+
+      .quick-action {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+      }
+    }
+
+    /* Scrollbar Styling */
+    .chat-messages::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .chat-messages::-webkit-scrollbar-track {
+      background: var(--secondary);
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb:hover {
+      background: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-icon">🌊</span>
+        PlastixThinker
+      </a>
+      <ul class="nav-menu">
+        <li><a href="index.html#features" class="nav-link">Features</a></li>
+        <li><a href="index.html#about" class="nav-link">About</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+        <li><a href="index.html" class="nav-cta">Home</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Chat Container -->
+  <div class="chat-container">
+    <!-- Chat Header -->
+    <div class="chat-header">
+      <h1 class="chat-title">Chat with PlastixThinker</h1>
+      <p class="chat-subtitle">Your AI Environmental Expert - Ask me anything about microplastics and environmental solutions</p>
+    </div>
+
+    <!-- Chat Messages -->
+    <div class="chat-messages" id="chatMessages">
+      <div class="message ai">
+        <div class="message-avatar">🤖</div>
+        <div class="message-content">
+          Hello! I'm PlastixThinker, your AI environmental expert. I'm here to help you understand microplastics, their impact on our environment, and solutions for reducing pollution. What would you like to learn about today?
+        </div>
+      </div>
+    </div>
+
+    <!-- Typing Indicator -->
+    <div class="typing-indicator" id="typingIndicator">
+      PlastixThinker is thinking...
+    </div>
+
+    <!-- Chat Input -->
+    <div class="chat-input-container">
+      <form class="chat-input-form" id="chatForm">
+        <textarea 
+          class="chat-input" 
+          id="chatInput" 
+          placeholder="Ask me anything about microplastics, environmental solutions, or related topics..."
+          rows="1"
+        ></textarea>
+        <button type="submit" class="send-button" id="sendButton">
+          <span>Send</span>
+          <span>→</span>
+        </button>
+      </form>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <div class="quick-action" onclick="askQuestion('What are microplastics and why are they a problem?')">
+          What are microplastics?
+        </div>
+        <div class="quick-action" onclick="askQuestion('How do microplastics affect marine life?')">
+          Marine impact
+        </div>
+        <div class="quick-action" onclick="askQuestion('How can I reduce microplastic pollution?')">
+          Reduce pollution
+        </div>
+        <div class="quick-action" onclick="askQuestion('What are the latest solutions for microplastic removal?')">
+          Latest solutions
+        </div>
+        <div class="quick-action" onclick="askQuestion('How do microplastics enter the food chain?')">
+          Food chain impact
+        </div>
+        <div class="quick-action" onclick="askQuestion('What are biodegradable alternatives to plastic?')">
+          Biodegradable alternatives
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // AI Chat functionality for PlastixThinker
+    document.addEventListener('DOMContentLoaded', function() {
+      const chatForm = document.getElementById('chatForm');
+      const chatInput = document.getElementById('chatInput');
+      const chatMessages = document.getElementById('chatMessages');
+      const sendButton = document.getElementById('sendButton');
+      const typingIndicator = document.getElementById('typingIndicator');
+
+      // Auto-resize textarea
+      chatInput.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = Math.min(this.scrollHeight, 150) + 'px';
+      });
+
+      // Handle form submission
+      chatForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const message = chatInput.value.trim();
+        if (!message) return;
+
+        await sendMessage(message);
+      });
+
+      // Global function for quick actions
+      window.askQuestion = async function(question) {
+        await sendMessage(question);
+      };
+
+      async function postJson(url, payload) {
+        try {
+          const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          return res;
+        } catch (e) {
+          return { ok: false, status: 0 };
+        }
+      }
+
+      // Send message function
+      async function sendMessage(message) {
+        // Add user message to chat
+        addMessage(message, 'user');
+        
+        // Clear input and reset height
+        chatInput.value = '';
+        chatInput.style.height = 'auto';
+        
+        // Disable send button and show typing indicator
+        sendButton.disabled = true;
+        showTypingIndicator();
+
+        try {
+          // Try multiple endpoints for maximum compatibility
+          const endpoints = ['/api/ai/ask', '/api/ask', '/ask'];
+          let response = null;
+          let data = null;
+
+          for (const endpoint of endpoints) {
+            const res = await postJson(endpoint, { question: message });
+            if (!res || !res.ok) continue;
+
+            // Try to parse JSON safely
+            try {
+              data = await res.json();
+            } catch (_) {
+              data = null;
+            }
+
+            if (data && (data.answer || (data.success && data.answer))) {
+              response = data;
+              break;
+            }
+          }
+
+          if (!response) {
+            throw new Error('No valid response from AI endpoints');
+          }
+
+          const answer = response.answer || (response.success && response.answer);
+          addMessage(answer, 'ai');
+
+        } catch (error) {
+          console.error('Error:', error);
+          addMessage('I apologize, but I\'m having trouble reaching the AI service. Please make sure the server is running and your API key is set. Then try again.', 'ai');
+        } finally {
+          hideTypingIndicator();
+          sendButton.disabled = false;
+          chatInput.focus();
+        }
+      }
+
+      // Add message to chat
+      function addMessage(content, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${sender}`;
+        
+        const avatar = document.createElement('div');
+        avatar.className = 'message-avatar';
+        avatar.textContent = sender === 'user' ? '👤' : '🤖';
+        
+        const messageContent = document.createElement('div');
+        messageContent.className = 'message-content';
+        messageContent.textContent = content;
+        
+        messageDiv.appendChild(avatar);
+        messageDiv.appendChild(messageContent);
+        
+        chatMessages.appendChild(messageDiv);
+        
+        // Scroll to bottom with smooth animation
+        setTimeout(() => {
+          chatMessages.scrollTo({
+            top: chatMessages.scrollHeight,
+            behavior: 'smooth'
+          });
+        }, 100);
+      }
+
+      // Show typing indicator
+      function showTypingIndicator() {
+        typingIndicator.classList.add('show');
+        setTimeout(() => {
+          chatMessages.scrollTo({
+            top: chatMessages.scrollHeight,
+            behavior: 'smooth'
+          });
+        }, 100);
+      }
+
+      // Hide typing indicator
+      function hideTypingIndicator() {
+        typingIndicator.classList.remove('show');
+      }
+
+      // Handle Enter key (submit on Enter, new line on Shift+Enter)
+      chatInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          chatForm.dispatchEvent(new Event('submit'));
+        }
+      });
+
+      // Add helpful tips after initial load
+      setTimeout(() => {
+        addMessage('💡 Tip: Click any quick action button below to ask common questions, or type your own question. I\'m here to help you learn about microplastics and environmental solutions!', 'ai');
+      }, 2000);
+
+      // Add another helpful tip after a delay
+      setTimeout(() => {
+        addMessage('🔍 You can ask me about specific topics like "microplastic detection methods", "biodegradable alternatives", "ocean cleanup technologies", or "personal actions to reduce plastic waste". What interests you most?', 'ai');
+      }, 6000);
+
+      // Focus on input when page loads
+      chatInput.focus();
+    });
+  </script>
+</body>
+</html>

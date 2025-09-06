@@ -2,33 +2,60 @@
   "name": "microplastics.ai",
   "version": "1.0.0",
   "type": "module",
-  "description": "A tiny robot that answers questions about microplastics",
-  "main": "index.js",
+
+  "description": "A professional AI-powered environmental education platform with document analysis capabilities",
+  "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src/**/*.js",
+    "format": "prettier --write src/**/*.js",
+    "setup": "npm install && echo '✅ Setup complete! Run npm start to start the server.'"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ashishspurugulla/microplastics.ai.git"
+    "url": "git+https://github.com/ashishspurugulla/plastixtinker.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "plastixtinker",
+    "ai",
+    "education",
+    "environment",
+    "openai",
+    "document-analysis",
+    "semantic-search"
+  ],
+  "author": "Ashish Purugulla",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ashishspurugulla/microplastics.ai/issues"
+    "url": "https://github.com/ashishspurugulla/plastixtinker/issues"
   },
-  "homepage": "https://github.com/ashishspurugulla/microplastics.ai#readme",
+      "homepage": "https://github.com/ashishspurugulla/plastixtinker#readme",
   "dependencies": {
-    "dotenv": "^17.2.0",
+    "bcryptjs": "^3.0.2",
+    "connect-sqlite3": "^0.9.16",
+    "cookie-parser": "^1.4.7",
+    "cookie-session": "^2.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
     "express": "^5.1.0",
-    "openai": "^5.9.0",
-    "bcryptjs": "^2.4.3",
-    "express-session": "^1.17.3",
-    "sqlite3": "^5.1.6",
-    "connect-sqlite3": "^0.9.0",
+    "express-rate-limit": "^7.5.1",
+    "express-session": "^1.18.2",
+    "helmet": "^7.2.0",
+    "multer": "^1.4.5-lts.1",
+    "openai": "^5.15.0",
     "passport": "^0.7.0",
-    "passport-google-oauth20": "^2.0.0",
-    "cookie-parser": "^1.4.6",
-    "multer": "^1.4.5-lts.1"
+    "sqlite3": "^5.1.7",
+    "xss-clean": "^0.1.4"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "nodemon": "^3.0.2",
+    "prettier": "^3.1.1"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
   }
 }

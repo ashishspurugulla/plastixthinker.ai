@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>About | microplastics.ai</title>
+  <title>About | PlastixThinker</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
     html, body {
@@ -80,73 +80,14 @@
 <body>
   <canvas class="background"></canvas>
   <div class="card">
-    <h1>About microplastics.ai</h1>
+    <h1>About PlastixThinker</h1>
     <p><b>What are microplastics?</b><br>
     Microplastics are tiny plastic particles, less than 5mm in size, that pollute our oceans, rivers, and even the air we breathe. They come from broken-down larger plastics, synthetic clothing fibers, and many everyday products. Microplastics can harm marine life and may even enter the food chain, affecting humans too.</p>
     <p><b>How does AI help?</b><br>
-    Artificial Intelligence (AI) can help scientists detect, track, and understand microplastics. By analyzing images, data, and patterns, AI can speed up research, identify pollution sources, and suggest solutions. microplastics.ai uses advanced AI to answer your questions and spread awareness about this important issue.</p>
+    Artificial Intelligence (AI) can help scientists detect, track, and understand microplastics. By analyzing images, data, and patterns, AI can speed up research, identify pollution sources, and suggest solutions. PlastixThinker uses advanced AI to answer your questions and spread awareness about this important issue.</p>
     <a href="index.html" class="back-btn">Back to Home</a>
+    <a href="chat.html" class="back-btn" style="margin-left: 1rem;">Chat with PlastixThinker</a>
   </div>
-  <script>
-    // Floating microplastics dots animation
-    const canvas = document.querySelector('.background');
-    const ctx = canvas.getContext('2d');
-    let dots = [];
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-    function randomColor() {
-      const colors = [
-        '#ffffff', // white
-        '#e6f7ff', // light blue
-        '#b3e0ff', // baby blue
-        '#f7cfff', // light pink
-        '#c7f7e6', // light green
-        '#f7f7cf', // light yellow
-        '#d1cfff'  // light purple
-      ];
-      return colors[Math.floor(Math.random() * colors.length)];
-    }
-    function createDots() {
-      dots = [];
-      const count = Math.floor(window.innerWidth / 20);
-      for (let i = 0; i < count; i++) {
-        dots.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          r: 2 + Math.random() * 4,
-          color: randomColor(),
-          speed: 0.2 + Math.random() * 0.5,
-          drift: (Math.random() - 0.5) * 0.2
-        });
-      }
-    }
-    createDots();
-    window.addEventListener('resize', createDots);
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let dot of dots) {
-        ctx.beginPath();
-        ctx.arc(dot.x, dot.y, dot.r, 0, 2 * Math.PI);
-        ctx.fillStyle = dot.color;
-        ctx.globalAlpha = 0.7;
-        ctx.fill();
-        ctx.globalAlpha = 1;
-        dot.y -= dot.speed;
-        dot.x += dot.drift;
-        if (dot.y < -10) {
-          dot.y = canvas.height + 10;
-          dot.x = Math.random() * canvas.width;
-        }
-        if (dot.x < -10) dot.x = canvas.width + 10;
-        if (dot.x > canvas.width + 10) dot.x = -10;
-      }
-      requestAnimationFrame(animate);
-    }
-    animate();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html> 
